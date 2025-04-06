@@ -11,7 +11,7 @@
     <div class="crud">
 
         <div class="head">
-            <h1>cruds</h1>
+            <h1>crud</h1>
             <h3>product managment System</h3>
         </div>
 
@@ -24,18 +24,20 @@
                 <input type="number" onkeyup="getTotal()" id="discount" class="discount" placeholder="Discount">
             </div>
             <small class="total" id="total"></small>
-            <input type="text" id="count" placeholder="Count">
+            <input type="number" id="count" placeholder="Count">
             <input type="text" id="category" placeholder="Category">
             <button class="create" id="create">create</button>
         </div>
 
         <div class="output">
-            <input type="text" id="search" class="search" placeholder="Search By Title">
+            <!-- <input type="text" id="search" class="search" placeholder="Search By Title">
 
             <div class="search-buttons">
                 <button class="search-title" id="search-title">Search By Title</button>
                 <button class="search-category" id="search-category">Search By Title</button>
-            </div>
+            </div> -->
+
+            <div id="delAll"></div>
 
             <table>
 
@@ -53,18 +55,6 @@
                 </tr>
 
                 <tbody id="tbody">
-                    <!-- <tr>
-                        <td>id</td>
-                        <td>title</td>
-                        <td>price</td>
-                        <td>taxes</td>
-                        <td>ads</td>
-                        <td>discount</td>
-                        <td>total</td>
-                        <td>category</td>
-                        <td><button class="update">update</button></td>
-                        <td><button class="delete">delete</button</td>
-                    </tr> -->
                 </tbody>
 
 

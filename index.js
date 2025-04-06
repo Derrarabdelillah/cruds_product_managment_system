@@ -5,6 +5,9 @@ let taxes = document.querySelector("#taxes");
 let ads = document.querySelector("#ads");
 let discount = document.querySelector("#discount");
 let total = document.querySelector("#total");
+let mood = '';
+
+let tmp;
 
 // Get Total Function
 function getTotal() {
@@ -46,12 +49,28 @@ create.onclick = function() {
         category: category.value,
     }
 
-    if( newProd.title != "" && newProd.price != "" && newProd.taxes != "" && newProd.ads != "" && newProd.discount != "" && newProd.category != "" && newProd.total != ""  ) {
-        dataProd.push(newProd);
-        // save data to local storage
-        localStorage.setItem("product", JSON.stringify(dataProd) );
-    }
+    // count and update button
 
+if( title.value != '' && price.value != '' && category.value != '' & newProd.count < 100) {
+    
+    if( mood === "create" ) {
+        if( newProd.count > 1 ) {
+            for( let i = 0; i < newProd.count; i++) {
+                dataProd.push(newProd);
+            } 
+        } else {
+            dataProd.push(newProd);
+        }
+    } else {
+        dataProd[tmp] = newProd;
+        mood = "create";
+        create.innerHTML = "Create";
+    }
+}
+
+    
+    // save data to local storage
+    localStorage.setItem("product", JSON.stringify(dataProd) );
     // clear inputs 
     clearInputs();
 
@@ -87,28 +106,61 @@ function showData() {
                         <td>${dataProd[i].discount}</td>
                         <td>${dataProd[i].total}</td>
                         <td>${dataProd[i].category}</td>
-                        <td><button class="update">update</button></td>
-                        <td><button onclick="delPro(${i})" class="delete">delete</button</td>
-                    </tr>
-        `
-        document.getElementById("tbody").innerHTML = table;
-    }
+                        <td><button class="update" onclick="updateData(${i})" >update</button></td>
+                        <td><button onclick="delPro(${i})" class="delete">delete</button></td>
+                        </tr>
+                        `
 }
+    document.getElementById("tbody").innerHTML = table;
+                            
+    let btnDelAll = document.getElementById("delAll");
+    if(dataProd.length > 0) {
+        btnDelAll.innerHTML = `<button onclick="delAll()" >Delete all (${dataProd.length}) </button>`;
+    } else {
+        btnDelAll.innerHTML = "";
+    }
+
+} 
 // show data
 showData();
 
 // delete product function
 function delPro(i) {
         // delete data from the array
-        dataProd.splice(i,1);
+        dataProd.splice(i, 1);
         // delete data from local storage
         localStorage.product = JSON.stringify(dataProd);
         // show data
         showData();
         // I have a probleme in delete function is in the first item of the table or array
 }
+// delete all proudcts function
+function delAll() {
+    localStorage.clear();
+    dataProd.splice(0);
+    showData();
+}
 
-
-// count
 // update
+// put onclick="updateData(i)" function on the button of update
+function updateData(i) {
+    // get the data of the clicked button and put it on the input fields
+    title.value = dataProd[i].title;
+    price.value = dataProd[i].price;
+    taxes.value = dataProd[i].taxes;
+    ads.value = dataProd[i].ads;
+    discount.value = dataProd[i].discount;
+    getTotal();
+    count.style.display = 'none';
+    category.value = dataProd[i].category;
+    // change the create button to update button
+    create.innerHTML = "Update";
+    mood = 'update';
+    tmp = i;
+    scroll({
+        top: 0,
+        behavior: "smooth",
+    })
+}
+
 // search
