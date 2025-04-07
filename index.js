@@ -29,7 +29,6 @@ let count = document.querySelector("#count");
 
 
 let dataProd = [];
-
 if( localStorage.product != null ) {
     dataProd = JSON.parse(localStorage.product);
 } else {
@@ -39,19 +38,19 @@ if( localStorage.product != null ) {
 // onclick event get product data and put it on array
 create.onclick = function() {
     let newProd = {
-        title: title.value,
+        title: title.value.toLowerCase(),
         price: price.value,
         taxes: taxes.value,
         ads: ads.value,
         discount: discount.value,
         total: total.innerHTML,
         count: count.value,
-        category: category.value,
+        category: category.value.toLowerCase(),
     }
 
     // count and update button
 
-if( title.value != '' && price.value != '' && category.value != '' & newProd.count < 100) {
+if( title.value != '' && price.value != '' && category.value != '' && newProd.count < 100) {
     
     if( mood === "create" ) {
         if( newProd.count > 1 ) {
@@ -66,13 +65,14 @@ if( title.value != '' && price.value != '' && category.value != '' & newProd.cou
         mood = "create";
         create.innerHTML = "Create";
     }
-}
-
-    
-    // save data to local storage
-    localStorage.setItem("product", JSON.stringify(dataProd) );
     // clear inputs 
     clearInputs();
+} else if( newProd.count > 100 ) {
+    window.alert("Sorry you can't add more than 100 products");    
+}
+
+    // save data to local storage
+    localStorage.setItem("product", JSON.stringify(dataProd) );
 
     // Show Data
     showData();
@@ -92,7 +92,6 @@ function clearInputs() {
 }
 
 // read 
-
 function showData() {
     let table = "";
     for( let i = 0; i < dataProd.length; i++ ) {
@@ -121,6 +120,7 @@ function showData() {
     }
 
 } 
+
 // show data
 showData();
 
@@ -134,6 +134,7 @@ function delPro(i) {
         showData();
         // I have a probleme in delete function is in the first item of the table or array
 }
+
 // delete all proudcts function
 function delAll() {
     localStorage.clear();
@@ -142,7 +143,6 @@ function delAll() {
 }
 
 // update
-// put onclick="updateData(i)" function on the button of update
 function updateData(i) {
     // get the data of the clicked button and put it on the input fields
     title.value = dataProd[i].title;
@@ -164,3 +164,74 @@ function updateData(i) {
 }
 
 // search
+let searchMood = "title";
+function getSearch(id) {
+    let search = document.getElementById("search");
+
+    if( id === "search-title" ) {
+        searchMood === "title";
+        search.placeholder = "Search By Title"
+    } else {
+        searchMood = "Category";
+        search.placeholder = "Search By Category"
+    }
+    search.focus();
+    search.value = '';
+    showData();
+}
+
+function Search(value) {
+
+    let table = '';
+    for( let i = 0; i < dataProd.length; i++ ) {
+
+        if( searchMood === "title" ) {
+            
+            if( dataProd[i].title.includes(value.toLowerCase()) ) {
+                
+                table += `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${dataProd[i].title}</td>
+                    <td>${dataProd[i].price}</td>
+                    <td>${dataProd[i].taxes}</td>
+                    <td>${dataProd[i].ads}</td>
+                    <td>${dataProd[i].discount}</td>
+                    <td>${dataProd[i].total}</td>
+                    <td>${dataProd[i].category}</td>
+                    <td><button class="update" onclick="updateData(${i})" >update</button></td>
+                    <td><button onclick="delPro(${i})" class="delete">delete</button></td>
+                    </tr>
+                    `
+    
+            } 
+
+
+        } else {
+
+            if( dataProd[i].category.includes(value.toLowerCase()) ) {
+                
+                table += `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${dataProd[i].title}</td>
+                    <td>${dataProd[i].price}</td>
+                    <td>${dataProd[i].taxes}</td>
+                    <td>${dataProd[i].ads}</td>
+                    <td>${dataProd[i].discount}</td>
+                    <td>${dataProd[i].total}</td>
+                    <td>${dataProd[i].category}</td>
+                    <td><button class="update" onclick="updateData(${i})" >update</button></td>
+                    <td><button onclick="delPro(${i})" class="delete">delete</button></td>
+                    </tr>
+                    `
+    
+            }
+
+        }
+        
+        document.getElementById("tbody").innerHTML = table;
+    }
+
+}
+// Clean Data

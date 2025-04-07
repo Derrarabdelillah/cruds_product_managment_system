@@ -39,6 +39,7 @@ input {
 
 input:focus {
     outline: none;
+    background-color: #000;
     scale: 1.01;
 }
 
