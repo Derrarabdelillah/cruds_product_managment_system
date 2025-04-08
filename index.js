@@ -47,7 +47,7 @@ function saveToLocalStorage() {
 let title = document.querySelector("#title");
 let category = document.querySelector("#category");
 let create = document.querySelector("#create");
-let count = document.querySelector("#count");
+let quantity = document.querySelector("#count");
 
 // onclick event get product data and put it on array
 create.onclick = function() {
@@ -58,15 +58,15 @@ create.onclick = function() {
         ads: ads.value,
         discount: discount.value,
         total: total.innerHTML,
-        count: count.value,
+        quantity: quantity.value,
         category: category.value.toLowerCase(),
     }
 
-    // count and update button
-    if(title.value != '' && price.value != '' && category.value != '' && newProd.count < 100) {
+    // quantity and update button
+    if(title.value != '' && price.value != '' && category.value != '' && newProd.quantity < 100) {
         if(mood === "create") {
-            if(newProd.count > 1) {
-                for(let i = 0; i < newProd.count; i++) {
+            if(newProd.quantity > 1) {
+                for(let i = 0; i < newProd.quantity; i++) {
                     dataProd.push(newProd);
                 } 
             } else {
@@ -76,12 +76,12 @@ create.onclick = function() {
             dataProd[tmp] = newProd;
             mood = "create";
             create.innerHTML = "Create";
-            count.style.display = 'block';
+            quantity.style.display = 'block';
         }
 
         // clear inputs 
         clearInputs();
-    } else if(newProd.count > 100) {
+    } else if(newProd.quantity > 100) {
         window.alert("Sorry you can't add more than 100 products");    
     }
 
@@ -99,7 +99,7 @@ function clearInputs() {
     ads.value = "";
     discount.value = "";
     total.innerHTML = "";
-    count.value = "";
+    quantity.value = "";
     category.value = "";
     total.style.backgroundColor = "#b9b9b9";
 }
@@ -112,14 +112,14 @@ function showData() {
             <tr>
                 <td>${i + 1}</td>
                 <td>${dataProd[i].title}</td>
-                <td>${dataProd[i].price}</td>
-                <td>${dataProd[i].taxes}</td>
-                <td>${dataProd[i].ads}</td>
-                <td>${dataProd[i].discount}</td>
-                <td>${dataProd[i].total}</td>
+                <td>$ ${dataProd[i].price}</td>
+                <td>$ ${dataProd[i].taxes}</td>
+                <td>$ ${dataProd[i].ads}</td>
+                <td>$ ${dataProd[i].discount}</td>
+                <td>$ ${dataProd[i].total}</td>
                 <td>${dataProd[i].category}</td>
-                <td><button class="update" onclick="updateData(${i})">update</button></td>
-                <td><button onclick="delPro(${i})" class="delete">delete</button></td>
+                <td><i class="fa-solid fa-pen-to-square update" onclick="updateData(${i})"></i></td>
+                <td><i class="fa-solid fa-x delete" onclick="delPro(${i})"></i></td>
             </tr>
         `;
     }
@@ -149,6 +149,7 @@ function delPro(i) {
 
 // delete all products function
 function delAll() {
+    let show = document.querySelector(".show")
     try {
         // Clear localStorage
         localStorage.removeItem("product");
@@ -163,7 +164,13 @@ function delAll() {
         showData();
         
         // Optional: Show confirmation to user
-        alert("All products have been deleted successfully!");
+        setTimeout(() => {
+            show.classList.add("active");
+        }, 1000);
+
+        setTimeout(() => {
+            show.classList.remove("active");
+        }, 4000);
     } catch (error) {
         console.error("Error clearing localStorage:", error);
         alert("There was a problem deleting all products. Please try again.");
@@ -179,7 +186,7 @@ function updateData(i) {
     ads.value = dataProd[i].ads;
     discount.value = dataProd[i].discount;
     getTotal();
-    count.style.display = 'none';
+    quantity.style.display = 'none';
     category.value = dataProd[i].category;
     // change the create button to update button
     create.innerHTML = "Update";
@@ -215,35 +222,35 @@ function Search(value) {
         if(searchMood === "title") {
             if(dataProd[i].title.includes(value.toLowerCase())) {
                 table += `
-                <tr>
-                    <td>${i + 1}</td>
-                    <td>${dataProd[i].title}</td>
-                    <td>${dataProd[i].price}</td>
-                    <td>${dataProd[i].taxes}</td>
-                    <td>${dataProd[i].ads}</td>
-                    <td>${dataProd[i].discount}</td>
-                    <td>${dataProd[i].total}</td>
-                    <td>${dataProd[i].category}</td>
-                    <td><button class="update" onclick="updateData(${i})">update</button></td>
-                    <td><button onclick="delPro(${i})" class="delete">delete</button></td>
-                </tr>
+            <tr>
+                <td>${i + 1}</td>
+                <td>${dataProd[i].title}</td>
+                <td>$ ${dataProd[i].price}</td>
+                <td>$ ${dataProd[i].taxes}</td>
+                <td>$ ${dataProd[i].ads}</td>
+                <td>$ ${dataProd[i].discount}</td>
+                <td>$ ${dataProd[i].total}</td>
+                <td>${dataProd[i].category}</td>
+                <td><i class="fa-solid fa-pen-to-square update" onclick="updateData(${i})"></i></td>
+                <td><i class="fa-solid fa-x delete" onclick="delPro(${i})"></i></td>
+            </tr>
                 `;
             }
         } else {
             if(dataProd[i].category.includes(value.toLowerCase())) {
                 table += `
-                <tr>
-                    <td>${i + 1}</td>
-                    <td>${dataProd[i].title}</td>
-                    <td>${dataProd[i].price}</td>
-                    <td>${dataProd[i].taxes}</td>
-                    <td>${dataProd[i].ads}</td>
-                    <td>${dataProd[i].discount}</td>
-                    <td>${dataProd[i].total}</td>
-                    <td>${dataProd[i].category}</td>
-                    <td><button class="update" onclick="updateData(${i})">update</button></td>
-                    <td><button onclick="delPro(${i})" class="delete">delete</button></td>
-                </tr>
+            <tr>
+                <td>${i + 1}</td>
+                <td>${dataProd[i].title}</td>
+                <td>$ ${dataProd[i].price}</td>
+                <td>$ ${dataProd[i].taxes}</td>
+                <td>$ ${dataProd[i].ads}</td>
+                <td>$ ${dataProd[i].discount}</td>
+                <td>$ ${dataProd[i].total}</td>
+                <td>${dataProd[i].category}</td>
+                <td><i class="fa-solid fa-pen-to-square update" onclick="updateData(${i})"></i></td>
+                <td><i class="fa-solid fa-x delete" onclick="delPro(${i})"></i></td>
+            </tr>
                 `;
             }
         }
