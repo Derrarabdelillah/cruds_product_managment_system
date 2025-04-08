@@ -106,20 +106,32 @@ table {
     table-layout: fixed;
     text-align: center;
     margin: 0;
-    border-collapse: collapse;
+    border-collapse: separate;
 }
 
 th {
+    border-radius: 5px;
     font-size: 20px;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0 1px;
+    padding: 10px 0;
 }
 
 table tr {
     margin: 10px 0;
+    border-spacing: 10px;
+    padding: 10px;
 }
 
+table tbody tr {
+    border-radius: 5px;
+    background-color: #000;
+    padding: 10px;
+}
+
+table tbody tr:hover {
+    background-color: #0000008c;
+}
 
 #delAll {
     margin: 15px 0;
@@ -178,3 +190,4 @@ table tr {
     background-color: #005000;
     color: white;
 }
+
