@@ -105,7 +105,8 @@ table {
     width: 100%;
     table-layout: fixed;
     text-align: center;
-    margin: 10px 0;
+    margin: 0;
+    border-collapse: collapse;
 }
 
 th {
@@ -123,3 +124,4 @@ table tr {
 #delAll {
     margin: 15px 0;
 }
+
