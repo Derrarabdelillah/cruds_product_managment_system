@@ -110,29 +110,29 @@ function showData() {
     for(let i = 0; i < dataProd.length; i++) {
         table += `
             <tr>
-                <td data-label="ID">${i + 1}</td>
-                <td data-label="Title">${dataProd[i].title}</td>
-                <td data-label="Price">${dataProd[i].price}</td>
-                <td data-label="Taxes">${dataProd[i].taxes}</td>
-                <td data-label="Ads">${dataProd[i].ads}</td>
-                <td data-label="Discount">${dataProd[i].discount}</td>
-                <td data-label="Total">${dataProd[i].total}</td>
-                <td data-label="Category">${dataProd[i].category}</td>
-                <td data-label="Update"><button class="update" onclick="updateData(${i})">update</button></td>
-                <td data-label="Delete"><button onclick="delPro(${i})" class="delete">delete</button></td>
+                <td>${i + 1}</td>
+                <td>${dataProd[i].title}</td>
+                <td>${dataProd[i].price}</td>
+                <td>${dataProd[i].taxes}</td>
+                <td>${dataProd[i].ads}</td>
+                <td>${dataProd[i].discount}</td>
+                <td>${dataProd[i].total}</td>
+                <td>${dataProd[i].category}</td>
+                <td><button class="update" onclick="updateData(${i})">update</button></td>
+                <td><button onclick="delPro(${i})" class="delete">delete</button></td>
             </tr>
         `;
     }
-
+    
     document.getElementById("tbody").innerHTML = table;
-
+                        
     let btnDelAll = document.getElementById("delAll");
     if(dataProd.length > 0) {
         btnDelAll.innerHTML = `<button onclick="delAll()">Delete all (${dataProd.length})</button>`;
     } else {
         btnDelAll.innerHTML = "";
     }
-}
+} 
 
 // show data
 showData();
@@ -150,19 +150,23 @@ function delPro(i) {
 // delete all products function
 function delAll() {
     try {
-        // Clear Local Storage
+        // Clear localStorage
         localStorage.removeItem("product");
+        
+        // Reset the array to empty
         dataProd = [];
-        // Clear Inputs Fields
+        
+        // Clear all input fields
         clearInputs();
+        
         // Update the display
         showData();
-
-        // Show Confirmation To user
-        alert("All Products have been deleted successfully!");
+        
+        // Optional: Show confirmation to user
+        alert("All products have been deleted successfully!");
     } catch (error) {
         console.error("Error clearing localStorage:", error);
-        alert("There was a problem deleting all products. Please try again.")
+        alert("There was a problem deleting all products. Please try again.");
     }
 }
 
@@ -206,32 +210,45 @@ function getSearch(id) {
 
 function Search(value) {
     let table = '';
-
+    
     for(let i = 0; i < dataProd.length; i++) {
-        let match = false;
-        if(searchMood === "title" && dataProd[i].title.includes(value.toLowerCase())) {
-            match = true;
-        } else if(searchMood === "category" && dataProd[i].category.includes(value.toLowerCase())) {
-            match = true;
-        }
-
-        if(match) {
-            table += `
+        if(searchMood === "title") {
+            if(dataProd[i].title.includes(value.toLowerCase())) {
+                table += `
                 <tr>
-                    <td data-label="ID">${i + 1}</td>
-                    <td data-label="Title">${dataProd[i].title}</td>
-                    <td data-label="Price">${dataProd[i].price}</td>
-                    <td data-label="Taxes">${dataProd[i].taxes}</td>
-                    <td data-label="Ads">${dataProd[i].ads}</td>
-                    <td data-label="Discount">${dataProd[i].discount}</td>
-                    <td data-label="Total">${dataProd[i].total}</td>
-                    <td data-label="Category">${dataProd[i].category}</td>
-                    <td data-label="Update"><button class="update" onclick="updateData(${i})">update</button></td>
-                    <td data-label="Delete"><button onclick="delPro(${i})" class="delete">delete</button></td>
+                    <td>${i + 1}</td>
+                    <td>${dataProd[i].title}</td>
+                    <td>${dataProd[i].price}</td>
+                    <td>${dataProd[i].taxes}</td>
+                    <td>${dataProd[i].ads}</td>
+                    <td>${dataProd[i].discount}</td>
+                    <td>${dataProd[i].total}</td>
+                    <td>${dataProd[i].category}</td>
+                    <td><button class="update" onclick="updateData(${i})">update</button></td>
+                    <td><button onclick="delPro(${i})" class="delete">delete</button></td>
                 </tr>
-            `;
+                `;
+            }
+        } else {
+            if(dataProd[i].category.includes(value.toLowerCase())) {
+                table += `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${dataProd[i].title}</td>
+                    <td>${dataProd[i].price}</td>
+                    <td>${dataProd[i].taxes}</td>
+                    <td>${dataProd[i].ads}</td>
+                    <td>${dataProd[i].discount}</td>
+                    <td>${dataProd[i].total}</td>
+                    <td>${dataProd[i].category}</td>
+                    <td><button class="update" onclick="updateData(${i})">update</button></td>
+                    <td><button onclick="delPro(${i})" class="delete">delete</button></td>
+                </tr>
+                `;
+            }
         }
     }
-
+    
+    // Moved outside the loop to avoid overwriting
     document.getElementById("tbody").innerHTML = table;
 }
